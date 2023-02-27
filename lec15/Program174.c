@@ -1,0 +1,159 @@
+#include<stdio.h>
+#include<stdlib.h>
+
+#pragma pack(1)
+struct node
+{
+    int data;
+    struct node *next;
+};
+
+typedef struct node NODE;
+typedef struct node * PNODE;
+typedef struct node ** PPNODE;
+
+void InsertFirst(PPNODE First , int No)
+{
+    PNODE newn = (PNODE)malloc(sizeof(NODE));   // 1 allocate memory
+
+    newn->data = No;
+    newn->next = NULL;
+        
+    if(*First == NULL)  //if linked list is empty
+    {
+        *First = newn;
+    }
+    else    //if linked list contain at lest one node
+    {
+        newn->next = *First;
+        *First = newn;
+    }
+}   
+
+void InsertLast(PPNODE First , int No)
+{
+    PNODE newn = (PNODE)malloc(sizeof(NODE));   // 1 allocate memory
+
+    PNODE temp = *First;
+
+    newn->data = No;
+    newn->next = NULL;
+
+    if(*First == NULL)  //if linked list is empty
+    {
+        *First = newn;
+    }
+    else    //if linked list contain at lest one node
+    {
+        while(temp->next != NULL)
+        {
+            temp = temp->next;
+        }
+        temp->next = newn;
+    }    
+            
+}
+
+void Display(PNODE First)
+{
+    printf("Element in linked list are:\n");
+
+    while(First != NULL)
+    {
+        printf("| %d |->",First->data);
+        First = First->next;
+    }
+    printf("Null\n");
+}
+
+int Count(PNODE First)
+{
+    int iCnt = 0; 
+     while(First != NULL)
+     {
+        iCnt++;
+        First = First->next;
+     }
+     return iCnt;
+}
+
+void DeleteFirst(PPNODE First)
+{
+    PNODE temp = (*First);
+    if(First == NULL)   //Empty LL
+    {
+       return; 
+    }
+    else if((*First)->next == NULL) //1 node in LL
+    {
+        free(*First);
+        *First = NULL;
+    }
+    else    //More than 1 node LL
+    {
+        (*First) = (*First)->next;
+        free(temp);
+    }
+}
+
+void DeleteLast(PPNODE First)
+{
+    PNODE temp = (*First);
+    if(First == NULL)   //Empty LL
+    {
+       return; 
+    }
+    else if((*First)->next == NULL) //1 node in LL
+    {
+        free(*First);
+        *First = NULL;
+    }
+    else    //More than 1 node LL
+    {
+        while(temp->next->next != NULL)
+        {
+            temp = temp->next;
+        }
+        free(temp->next);
+        temp->next = NULL;
+    }
+}
+
+int main()
+{   
+    int iRet = 0;
+    
+    PNODE Head = NULL;
+    InsertFirst(&Head,51);
+    InsertFirst(&Head,21);
+    InsertFirst(&Head,11);
+
+    Display(Head);
+
+    iRet = Count(Head);
+    printf("Number of nodes are:%d\n",iRet);
+
+    InsertLast(&Head, 101);
+    InsertLast(&Head, 111);
+    
+    Display(Head);
+
+    iRet = Count(Head);
+    printf("Number of nodes are:%d\n",iRet);
+
+    DeleteFirst(&Head);
+
+    Display(Head);
+
+    iRet = Count(Head);
+    printf("Number of nodes are:%d\n",iRet);
+
+    DeleteLast(&Head);
+
+    Display(Head);
+
+    iRet = Count(Head);
+    printf("Number of nodes are:%d\n",iRet);
+
+    return 0;
+}
